@@ -101,9 +101,9 @@ step 6: open Windows+R-->certmgr.msc-->view certificate
    Store the password to your key file in a secure place to avoid misuse.
 
 
---------------------------------------------------------------------------------------- 
-	Run the following command to extract the certificate ClientCertificateextracted.crt:
-----------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------- 
+ Run the following command to extract the .CRT file from PFX (ClientCertificateextracted.crt):
+--------------------------------------------------------------------------------------------------
 
    Step1: openssl pkcs12 -in [yourfile.pfx] -clcerts -nokeys -out [drlive.crt]
 
@@ -132,7 +132,7 @@ step 6: open Windows+R-->certmgr.msc-->view certificate
      Step1: openssl rsa -in [keyfile-encrypted.key] -outform PEM -out [keyfile-encrypted-pem.key]
             openssl rsa -in server.key -outform PEM -out ClientPemName.pem
 
-     Step2: Enter pass phrase for server.key: ServerKey@123
+     Step2: Enter pass phrase for server.key: ServerKey@123 (only pfx file password)
             writing RSA key
 
 
