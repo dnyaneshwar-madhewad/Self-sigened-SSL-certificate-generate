@@ -1,0 +1,98 @@
+---------------------------------------------------------
+   Step to download OpenSSL and configure on Windows 10
+---------------------------------------------------------
+Step 1: download open SSL tool on  Windows 10.
+Step 2: set varible path go to following path = C:\Program Files\OpenSSL-Win64\bin
+Step 3: Right click "This PC"-->open properties-->select advanced system setting-->Environmen variable-->system variable-->add path and add this path
+
+---------------------------------------------------------
+   How to Create Self Signed SSL certificate?
+---------------------------------------------------------
+step 1: select SSL folder and open cmd
+
+step 2: openssl genrsa -des3 -out server.key 2048
+        Enter PEM pass phrase: Example@123
+
+Step 3: openssl req -new -key server.key -sha256 -out server.csr
+        Enter pass phrase for server.key : Example@123
+        Country Name (2 letter code) [AU]:IN 
+        State or Province Name (full name) [Some-State]:MH
+        Locality Name (eg, city) []:Mumbai
+        Organization Name (eg, company) [Internet Widgits Pty Ltd]:MyOrganizationName
+        Organizational Unit Name (eg, section) []:ITdepartment
+        Common Name (e.g. server FQDN or YOUR name) []:www.myorgnization.com
+        Email Address []:myorganization@mail.com
+        Please enter the following 'extra' attributes to be sent with your certificate request(must be at most 20 bytes long)
+        A challenge password []:Orgpass@123
+        An optional company name []:Optionalcompanyname
+
+Step 4: openssl x509 -req -days 365 -in server.csr -signkey server.key -sha256 -out ClientCertificate.crt
+        Enter pass phrase for server.key: Example@123
+        Certificate request self-signature ok
+        subject=C=IN, ST=MH, L=Mumbai, O=MyOrganizationName, OU=ITdepartment, CN=www.myorganization.com, emailAddress=myorgnization@mail.com
+
+
+---------------------------------------------------------
+How to Create PFX certificate?
+---------------------------------------------------------
+CMD  if you have domain, intermediate and root certificate
+-->  openssl pkcs12 -export -out domain.name.pfx -inkey domain.name.key -in domain.name.crt -in intermediate.crt -in rootca.crt
+
+Step 1: create PFX name folder and open cmd in same path and type following cmd
+Step 2: openssl pkcs12 -export -out clientpfxname.pfx -inkey server.key -in ClientCertificate.crt
+        Enter pass phrase for server.key: Example@123
+        Enter Export Password: Passpfx@123
+        Verifying - Enter Export Password: Passpfx@123
+Step 2: this will create clientpfxname.pfx in folder
+
+
+---------------------------------------------------------
+How to extract .crt file from PFX certficate?
+---------------------------------------------------------
+
+Step 1: double click on clientpfxname.pfx
+Step 2: select current user and select path E:\Github\SSL cert\PFX\clientpfxname.pfx
+step 3: Type the password for the private key : Passpfx@123
+step 4: certificate store->automactically select the certificate store based on the type of certificate
+step 5: certificate import successfully
+step 6: open Windows+R-->certmgr.msc-->view certificate
+
+---------------------------------------------------------
+Extract .crt and .key files from .pfx file
+---------------------------------------------------------
+
+Start OpenSSL from the OpenSSL\bin folder.
+Open the command prompt and go to the folder that contains your .pfx file.
+
+---------------------------------------------------------
+Run the following command to extract the private key:
+---------------------------------------------------------
+   Step1: openssl pkcs12 -in [yourfile.pfx] -nocerts -out [drlive.key]
+          openssl pkcs12 -in clientpfxname.pfx -nocerts -out serverkey
+   Step2: Enter Import Password:
+   Step3: Enter PEM pass phrase:
+
+You will be prompted to type the import password.Type the password that you used to protect your keypair when you created the .pfx file. You will be prompted again to provide a new password to protect the .key file that you are creating.Store the password to your key file in a secure place to avoid misuse.
+--------------------------------------------------------- 
+Run the following command to extract the certificate:
+---------------------------------------------------------
+   Step1: openssl pkcs12 -in [yourfile.pfx] -clcerts -nokeys -out [drlive.crt]
+   Step2: openssl pkcs12 -in clientpfxname.pfx -clcerts -nokeys -out ClientCertificateextracted.crt
+   Step3: Enter Import Password: Passpfx@123
+
+---------------------------------------------------------
+Run the following command to decrypt the private key: 
+---------------------------------------------------------
+   Step1: openssl rsa -in [drlive.key] -out [drlive-decrypted.key]
+          openssl rsa -in serverkey.key -out decrypted.key
+           
+
+        Type the password that you created to protect the private key file in the previous step.
+        The .crt file and the decrypted and encrypted .key files are available in the path, where you started OpenSSL.
+
+---------------------------------------------------------
+Convert .pfx file to .pem format
+---------------------------------------------------------
+     step1: openssl rsa -in [keyfile-encrypted.key] -outform PEM -out [keyfile-encrypted-pem.key]
+
+
