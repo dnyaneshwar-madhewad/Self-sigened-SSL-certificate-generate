@@ -4,6 +4,7 @@
 Step 1: download open SSL tool on  Windows 10.
 Step 2: set varible path go to following path = C:\Program Files\OpenSSL-Win64\bin
 Step 3: Right click "This PC"-->open properties-->select advanced system setting-->Environmen variable-->system variable-->add path and add this path
+Open SSL download LinK: https://slproweb.com/products/Win32OpenSSL.html
 
 ---------------------------------------------------------
    How to Create Self Signed SSL certificate?
