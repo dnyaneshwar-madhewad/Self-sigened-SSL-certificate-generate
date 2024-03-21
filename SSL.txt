@@ -3,7 +3,8 @@
 ---------------------------------------------------------
 Step 1: download open SSL tool on  Windows 10.
 Step 2: set varible path go to following path = C:\Program Files\OpenSSL-Win64\bin
-Step 3: Right click "This PC"-->open properties-->select advanced system setting-->Environmen variable-->system variable-->add path and add this path
+Step 3: Right click "This PC"-->open properties-->select advanced system setting-->Environmen variable-->
+        system variable-->add path and add this path
 Open SSL download LinK: https://slproweb.com/products/Win32OpenSSL.html
 
 ---------------------------------------------------------
@@ -73,7 +74,10 @@ Run the following command to extract the private key:
    Step2: Enter Import Password:
    Step3: Enter PEM pass phrase:
 
-You will be prompted to type the import password.Type the password that you used to protect your keypair when you created the .pfx file. You will be prompted again to provide a new password to protect the .key file that you are creating.Store the password to your key file in a secure place to avoid misuse.
+You will be prompted to type the import password.
+Type the password that you used to protect your keypair when you created the .pfx file.
+You will be prompted again to provide a new password to protect the .key file that you are creating.
+Store the password to your key file in a secure place to avoid misuse.
 --------------------------------------------------------- 
 Run the following command to extract the certificate:
 ---------------------------------------------------------
