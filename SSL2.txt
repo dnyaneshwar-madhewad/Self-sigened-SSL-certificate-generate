@@ -1,0 +1,141 @@
+---------------------------------------------------------
+   Step to download OpenSSL and configure on Windows 10
+---------------------------------------------------------
+--------------------------------------------
+	How to download OPENSSL Tool and Path config
+---------------------------------------------
+
+Step 1: download open SSL tool on  Windows 10.
+
+Step 2: set varible path go to following path = C:\Program Files\OpenSSL-Win64\bin
+
+Step 3: Right click "This PC"-->open properties-->select advanced system setting-->
+        Environmen variable-->system variable-->add path and add this path
+
+
+---------------------------------------------------------
+	How to Create Self Signed SSL certificate?
+---------------------------------------------------------
+step 1: select SSL folder and open cmd
+
+
+step 2: Server.key=ServerKey@123
+
+        openssl genrsa -des3 -out server.key 2048
+        Enter PEM pass phrase: ServerKey@123
+
+
+Step 3: CertificateSigningRequest.csr
+
+        openssl req -new -key server.key -sha256 -out CertificateSigningRequest.csr
+        Enter pass phrase for server.key : ServerKey@123
+        Country Name (2 letter code) [AU]:IN 
+        State or Province Name (full name) [Some-State]:MH
+        Locality Name (eg, city) []:Mumbai
+        Organization Name (eg, company) [Internet Widgits Pty Ltd]:MyOrganizationName
+        Organizational Unit Name (eg, section) []:Unit-Nanme-ITdepartment
+        Common Name (e.g. server FQDN or YOUR name) []:www.myorganization.com
+        Email Address []:myorganization@mail.com
+        Please enter the following 'extra' attributes to be sent with your certificate request(must be at most 20 bytes long)
+        A challenge password []:Orgpass@123
+        An optional company name []:Optionalcompanyname
+
+
+Step 4: ClientCertificate.crt
+
+        openssl x509 -req -days 365 -in CertificateSigningRequest.csr -signkey server.key -sha256 -out ClientCertificate.crt
+        Enter pass phrase for server.key: ServerKey@123
+        Certificate request self-signature ok
+        subject=C=IN, ST=MH, L=Mumbai, O=MyOrganizationName, OU=Unit-Nanme-ITdepartment, CN=www.myorganization.com, emailAddress=myorganization@mail.co
+
+
+---------------------------------------------------------
+	How to Create PFX certificate?
+---------------------------------------------------------
+CMD  if you have domain, intermediate and root certificate
+
+-->  openssl pkcs12 -export -out domain.name.pfx -inkey domain.name.key -in domain.name.crt -in intermediate.crt -in rootca.crt
+
+Step 1: create PFX name folder and open cmd in same path and type following cmd
+
+Step 2: openssl pkcs12 -export -out clientpfxname.pfx -inkey server.key -in ClientCertificate.crt
+        Enter pass phrase for server.key: ServerKey@123
+        Enter Export Password: Passpfx@123
+        Verifying - Enter Export Password: Passpfx@123
+
+Step 3: this will create clientpfxname.pfx in folder
+
+
+---------------------------------------------------------
+	How to extract .crt file from PFX certficate?
+---------------------------------------------------------
+
+Step 1: double click on clientpfxname.pfx
+
+Step 2: select current user and select path E:\Github\SSL cert\PFX\clientpfxname.pfx
+
+step 3: Type the password for the private key : Passpfx@123
+
+step 4: certificate store->automactically select the certificate store based on the type of certificate
+
+step 5: certificate import successfully
+
+step 6: open Windows+R-->certmgr.msc-->view certificate
+
+
+---------------------------------------------------------------------
+	Run the following command to extract the server.key file from PFX:
+--------------------------------------------------------------------
+
+  Step1: openssl pkcs12 -in [yourfile.pfx] -nocerts -out [drlive.key]
+         openssl pkcs12 -in clientpfxname.pfx -nocerts -out serverkey
+ 
+  Step2: Enter Import Password:Passpfx@123
+
+  Step3: Enter PEM pass phrase:PasspfxNew@123 (New password is optional you can add old password)
+ 
+  Step4: Verifying - Enter PEM pass phrase:PasspfxNew@123 (New password is optional you can add old password)
+
+   You will be prompted to type the import password.
+   Type the password that you used to protect your keypair when you created the .pfx file.
+   You will be prompted again to provide a new password to protect the .key file that you are creating.
+   Store the password to your key file in a secure place to avoid misuse.
+
+
+--------------------------------------------------------------------------------------- 
+	Run the following command to extract the certificate ClientCertificateextracted.crt:
+----------------------------------------------------------------------------------------
+
+   Step1: openssl pkcs12 -in [yourfile.pfx] -clcerts -nokeys -out [drlive.crt]
+
+   Step2: openssl pkcs12 -in clientpfxname.pfx -clcerts -nokeys -out ClientCertificateextracted.crt
+
+   Step3: Enter Import Password: Passpfx@123 (required only pfx file password)
+
+
+-------------------------------------------------------------------
+	Run the following command to decrypt the Server.key (private key): 
+-------------------------------------------------------------------
+
+   Step1: openssl rsa -in [drlive.key] -out [drlive-decrypted.key]
+          openssl rsa -in serverkey.key -out decrypted.key
+
+   Step2: Enter pass phrase for serverkey.key: ServerKey@123 (any password that decrypt)
+          writing RSA key
+           
+        Type the password that you created to protect the private key file in the previous step.
+        The .crt file and the decrypted and encrypted .key files are available in the path, where you started OpenSSL.
+
+---------------------------------------------------------
+	Convert .pfx file to .pem format
+---------------------------------------------------------
+
+     Step1: openssl rsa -in [keyfile-encrypted.key] -outform PEM -out [keyfile-encrypted-pem.key]
+            openssl rsa -in server.key -outform PEM -out ClientPemName.pem
+
+     Step2: Enter pass phrase for server.key: ServerKey@123
+            writing RSA key
+
+
+----------------------------------------------------------------------------------
+
